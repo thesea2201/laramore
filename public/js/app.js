@@ -1857,7 +1857,6 @@ __webpack_require__.r(__webpack_exports__);
   methods: {
     sendMessage: function sendMessage() {
       this.$emit('messagesent', {
-        user: this.user,
         message: this.newMessage
       });
       this.newMessage = '';
@@ -1898,6 +1897,9 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ["messages", "user"],
@@ -1913,13 +1915,10 @@ __webpack_require__.r(__webpack_exports__);
     breakMessage: function breakMessage() {
       var maxCharacterInLine = 20;
       var messages = this.$props.messages;
-      console.log(messages);
-      $.each(messages, function (key, value) {
-        console.log(value.message);
-      });
+      $.each(messages, function (key, value) {});
     },
     scrollToEnd: function scrollToEnd() {
-      var container = this.$el.querySelector(".incoming_msg");
+      var container = this.$el.querySelector(".msg_history");
       container.scrollTop = container.scrollHeight;
     },
     toDay: function toDay() {
@@ -65157,17 +65156,28 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c(
-    "div",
-    { staticClass: "msg_history" },
-    [
+  return _c("div", [
+    _c(
+      "div",
+      { staticClass: "msg_history" },
       _vm._l(_vm.messages, function(message) {
-        return message.user_id == _vm.user.id
-          ? _c("div", { key: message.id, staticClass: "incoming_msg" }, [
-              _vm._m(0, true),
-              _vm._v(" "),
-              _c("div", { staticClass: "received_msg" }, [
-                _c("div", { staticClass: "received_withd_msg" }, [
+        return _c("div", { key: message.id }, [
+          message.user_id != _vm.user.id
+            ? _c("div", { staticClass: "incoming_msg" }, [
+                _vm._m(0, true),
+                _vm._v(" "),
+                _c("div", { staticClass: "received_msg" }, [
+                  _c("div", { staticClass: "received_withd_msg" }, [
+                    _c("p", [_vm._v(_vm._s(message))]),
+                    _vm._v(" "),
+                    _c("span", { staticClass: "time_date" }, [
+                      _vm._v(" 11:01 AM | June 9")
+                    ])
+                  ])
+                ])
+              ])
+            : _c("div", { staticClass: "outgoing_msg" }, [
+                _c("div", { staticClass: "sent_msg" }, [
                   _c("p", [_vm._v(_vm._s(message.message))]),
                   _vm._v(" "),
                   _c("span", { staticClass: "time_date" }, [
@@ -65175,14 +65185,11 @@ var render = function() {
                   ])
                 ])
               ])
-            ])
-          : _vm._e()
+        ])
       }),
-      _vm._v(" "),
-      _vm._m(1)
-    ],
-    2
-  )
+      0
+    )
+  ])
 }
 var staticRenderFns = [
   function() {
@@ -65193,22 +65200,6 @@ var staticRenderFns = [
       _c("img", {
         attrs: { src: "image/avatar/avatar-default.png", alt: "sunil" }
       })
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "outgoing_msg" }, [
-      _c("div", { staticClass: "sent_msg" }, [
-        _c("p", [
-          _vm._v(
-            "Test which is a new approach to have all\n              solutions"
-          )
-        ]),
-        _vm._v(" "),
-        _c("span", { staticClass: "time_date" }, [_vm._v(" 11:01 AM | June 9")])
-      ])
     ])
   }
 ]
@@ -77399,7 +77390,7 @@ var app = new Vue({
     var _this = this;
 
     this.fetchMessages();
-    Echo["private"]('chat').listen('MessageSent', function (e) {
+    Echo["private"]('laramore').listen('MessageSent', function (e) {
       _this.messages.push({
         message: e.message.message
       });
@@ -77415,8 +77406,12 @@ var app = new Vue({
       });
     },
     addMessage: function addMessage(message) {
-      this.messages.push(message);
-      axios.post('/messages', message).then(function (response) {});
+      // this.messages.push(message);
+      axios.post('/messages', message).then(function (response) {// axios.get('/messages').then(response => {
+        //     this.messages = response.data.messages;
+        //     this.user = response.data.user;
+        // });
+      });
     }
   }
 });
@@ -77479,7 +77474,7 @@ if (token) {
 window.Pusher = __webpack_require__(/*! pusher-js */ "./node_modules/pusher-js/dist/web/pusher.js");
 window.Echo = new laravel_echo__WEBPACK_IMPORTED_MODULE_0__["default"]({
   broadcaster: 'pusher',
-  key: "b1caebe09f1d57058df1",
+  key: "93a826af3b73d7bb8210",
   cluster: "ap1",
   encrypted: true
 });

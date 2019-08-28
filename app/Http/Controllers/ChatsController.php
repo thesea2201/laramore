@@ -6,6 +6,7 @@ use App\Message;
 use App\Events\MessageSent;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\JsonResponse;
 
 class ChatsController extends Controller
 {
@@ -32,9 +33,8 @@ class ChatsController extends Controller
      */
     public function fetchMessages()
     {
-        $user = Auth::user();
         $message = Message::with('user')->get();
-        return ['user'=>$user, 'messages' =>$message];
+        return ['messages' =>$message];
     }
 
     /**
@@ -52,8 +52,8 @@ class ChatsController extends Controller
         ]);
             
         broadcast(new MessageSent($user, $message))->toOthers();
-
-        return ['status' => 'Message Sent!'];
+        $status = 'success';
+        return response()->json(compact(['status']), 200);
     }
 
 }
