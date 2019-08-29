@@ -1905,23 +1905,18 @@ __webpack_require__.r(__webpack_exports__);
   props: ["messages", "user"],
   data: function data() {
     return {
-      message: null
+      today: ''
     };
   },
   updated: function updated() {
     this.scrollToEnd();
   },
   methods: {
-    breakMessage: function breakMessage() {
-      var maxCharacterInLine = 20;
-      var messages = this.$props.messages;
-      $.each(messages, function (key, value) {});
-    },
     scrollToEnd: function scrollToEnd() {
       var container = this.$el.querySelector(".msg_history");
       container.scrollTop = container.scrollHeight;
     },
-    toDay: function toDay() {
+    formatDay: function formatDay() {
       Vue.filter('formatDate', function (value) {
         if (value) {
           return moment__WEBPACK_IMPORTED_MODULE_0___default()(String(value)).format('DD/MM/YYYY hh:mm');
@@ -1932,11 +1927,23 @@ __webpack_require__.r(__webpack_exports__);
           return moment__WEBPACK_IMPORTED_MODULE_0___default()(String(value)).format('hh:mm');
         }
       });
+    },
+    checkTime: function checkTime(createdAt) {
+      var now = new Date();
+      var date = new Date(String(createdAt));
+      var day = date.getDate();
+      var month = date.getMonth();
+      var year = date.getFullYear();
+
+      if (date) {
+        if (day == now.getDate() && month == now.getMonth() && year == now.getFullYear()) {
+          return date.getHours() + ':' + date.getMinutes();
+        }
+      }
     }
   },
   beforeMount: function beforeMount() {
-    this.breakMessage();
-    this.toDay();
+    this.formatDay();
   }
 });
 
@@ -65168,10 +65175,10 @@ var render = function() {
                 _vm._v(" "),
                 _c("div", { staticClass: "received_msg" }, [
                   _c("div", { staticClass: "received_withd_msg" }, [
-                    _c("p", [_vm._v(_vm._s(message))]),
+                    _c("p", [_vm._v(_vm._s(message.message))]),
                     _vm._v(" "),
                     _c("span", { staticClass: "time_date" }, [
-                      _vm._v(" 11:01 AM | June 9")
+                      _vm._v(_vm._s(_vm.checkTime(message.created_at)))
                     ])
                   ])
                 ])
@@ -65181,7 +65188,7 @@ var render = function() {
                   _c("p", [_vm._v(_vm._s(message.message))]),
                   _vm._v(" "),
                   _c("span", { staticClass: "time_date" }, [
-                    _vm._v(" 11:01 AM | June 9")
+                    _vm._v(_vm._s(_vm.checkTime(message.created_at)))
                   ])
                 ])
               ])
@@ -77406,11 +77413,14 @@ var app = new Vue({
       });
     },
     addMessage: function addMessage(message) {
+      var _this3 = this;
+
       // this.messages.push(message);
-      axios.post('/messages', message).then(function (response) {// axios.get('/messages').then(response => {
-        //     this.messages = response.data.messages;
-        //     this.user = response.data.user;
-        // });
+      axios.post('/messages', message).then(function (response) {
+        axios.get('/messages').then(function (response) {
+          _this3.messages = response.data.messages;
+          _this3.user = response.data.user;
+        });
       });
     }
   }

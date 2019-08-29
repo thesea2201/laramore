@@ -29,6 +29,8 @@
         "laravel-echo": "^1.5.4",
         "laravel-echo-server": "^1.5.7",
         "pusher-js": "^5.0.0",
-        "socket.io-client": "^2.2.0"
+        "socket.io-client": "^2.2.0",
+        "vue-infinite-loading": "^2.4.4",
+        "vue-resource": "^1.5.1"
     }
 }

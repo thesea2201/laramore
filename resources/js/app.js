@@ -60,10 +60,10 @@ const app = new Vue({
         addMessage(message) {
             // this.messages.push(message);
             axios.post('/messages', message).then(response => {
-                // axios.get('/messages').then(response => {
-                //     this.messages = response.data.messages;
-                //     this.user = response.data.user;
-                // });
+                axios.get('/messages').then(response => {
+                    this.messages = response.data.messages;
+                    this.user = response.data.user;
+                });
             });
         }
     }

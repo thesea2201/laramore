@@ -15,7 +15,7 @@ img{
 .inbox_msg {
   border: 1px solid #c4c4c4;
   clear: both;
-  border-radius: 10px;
+  border-radius: 15px;
   overflow: hidden;
 }
 .top_spac{ margin: 20px 0 0;}
@@ -79,7 +79,7 @@ img{
  }
  .received_withd_msg p {
   background: #ebebeb none repeat scroll 0 0;
-  border-radius: 10px;
+  border-radius: 15px;
   color: #646464;
   font-size: 14px;
   margin: 0;
@@ -101,7 +101,7 @@ img{
 
  .sent_msg p {
   background: #05728f none repeat scroll 0 0;
-  border-radius: 10px;
+  border-radius: 15px;
   font-size: 14px;
   margin: 0; color:#fff;
   padding: 5px 10px 5px 12px;
@@ -118,7 +118,7 @@ img{
 .input_msg_write input {
   background: rgba(0, 0, 0, 0) none repeat scroll 0 0;
   border: medium none;
-  border-radius: 10px;
+  border-radius: 15px;
   color: #4c4c4c;
   font-size: 15px;
   min-height: 48px;
