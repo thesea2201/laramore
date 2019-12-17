@@ -3,7 +3,8 @@
 <div class="msg_history">
   <div v-for="message in messages" :key="message.id">
     <div class="incoming_msg" v-if="message.user_id != user.id">
-        <div class="incoming_msg_img"> <img src="image/avatar/avatar-default.png" alt="sunil"> </div>
+        <div class="incoming_msg_img"> <img class="avatar" src="image/avatar/avatar-default.png" alt="sunil"> </div>
+        <!-- <div class="sender_name">kaito kid </div> -->
         <div class="received_msg">
             <div class="received_withd_msg">
                 <p>{{ message.message }}</p>

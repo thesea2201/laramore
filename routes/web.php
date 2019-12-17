@@ -12,7 +12,11 @@
 */
 
 Auth::routes();
+Route::group(['middleware' => 'auth'], function () {
+    Route::get('/', 'ChatsController@index');
+    Route::get('messages', 'ChatsController@fetchMessages');
+    Route::post('messages', 'ChatsController@sendMessage');
 
-Route::get('/', 'ChatsController@index');
-Route::get('messages', 'ChatsController@fetchMessages');
-Route::post('messages', 'ChatsController@sendMessage');
+    Route::get('/maps', 'LocationController@view')->name('map.index');
+    Route::post('/save-maps', 'LocationController@store');
+});

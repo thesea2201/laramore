@@ -1900,6 +1900,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ["messages", "user"],
@@ -65205,6 +65206,7 @@ var staticRenderFns = [
     var _c = _vm._self._c || _h
     return _c("div", { staticClass: "incoming_msg_img" }, [
       _c("img", {
+        staticClass: "avatar",
         attrs: { src: "image/avatar/avatar-default.png", alt: "sunil" }
       })
     ])
