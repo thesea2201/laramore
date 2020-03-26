@@ -28,12 +28,14 @@ function initMap() {
         type: type.pin
     });
     
-    // markerRandomPosition(DFM, size);
+    // markerRandomPosition(DFM, size, features, type);
 
     data = $('#location-data').data('locations');
     $.each(data, function(i, item) {
+        console.log(item.lat);
         features.push({
             position: new google.maps.LatLng(item.lat, item.long),
+            address: item.address_address,
             type: item.type
         });
     });
@@ -47,13 +49,7 @@ function getRandomPositionAround(area, size) {
     return { lat: x, long: y };
 };
 
-function getRandomPositionAround(area, size) {
-    let x = area.lat + Math.random() * 2 * size - size;
-    let y = area.long + Math.random() * 2 * size - size;
-    return { lat: x, long: y };
-};
-
-function markerRandomPosition(location, size){
+function markerRandomPosition(location, size, features, type){
     for (let i = 0; i < 4; i++) {
         let point = getRandomPositionAround(location, size);
         features.push({
@@ -80,11 +76,28 @@ function markerRandomPosition(location, size){
 }
 
 function markerLocationOnMap(location, map, icons) {
+    console.log(location);
     for (var i = 0; i < location.length; i++) {
+        var contentString = '<div id="content">'+
+            '<div id="siteNotice">'+
+            '</div>'+
+            '<h1 id="firstHeading" class="firstHeading">' + location[i].address + '</h1>'+
+            '<div id="bodyContent">'+
+            location[i].address +
+            '</div>';
+
         var marker = new google.maps.Marker({
             position: location[i].position,
             icon: icons[location[i].type].icon,
             map: map
+        });
+        var infowindow = new google.maps.InfoWindow({
+            content: contentString
+        });
+
+        marker.addListener('click', function() {
+            infowindow.open(map, marker);
+            console.log(marker);
         });
     };
 }
@@ -126,6 +139,10 @@ function initialize() {
         const autocomplete = new google.maps.places.Autocomplete(input);
         autocomplete.key = fieldKey;
         autocompletes.push({ input: input, map: map, marker: marker, autocomplete: autocomplete });
+
+        // Add lat, long input
+        $('#address-latitude').val(latitude);
+        $('#address-longitude').val(longitude);
     }
 
     for (let i = 0; i < autocompletes.length; i++) {

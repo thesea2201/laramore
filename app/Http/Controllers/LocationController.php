@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Location;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Config;
 
 class LocationController extends Controller
 {
@@ -11,13 +12,13 @@ class LocationController extends Controller
     {
         $data = [
             'name'              =>$request->get('name'),
-            'address_address'   => $request->get('address_address'),
+            'address_address'   => $request->get('name'),
             'lat'               => $request->get('lat'),
             'long'              =>  $request->get('long'),
             'type'              =>  $request->get('type')
         ];  
         $location = Location::create($data);
-        // return redirect()->route('map.index');
+        return redirect()->route('map.index');
     }
     
     /**
@@ -29,7 +30,8 @@ class LocationController extends Controller
             $locations = $locations->toArray();
             $locations = json_encode($locations);
         }
+        $urlRegex = Config::get('constants.urlRegex');
         // dd($locations);
-        return view('location', compact('locations'));
+        return view('location', compact('locations', 'urlRegex'));
     }
 }
