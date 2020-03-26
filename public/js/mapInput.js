@@ -97,7 +97,6 @@ function markerLocationOnMap(location, map, icons) {
 
         marker.addListener('click', function() {
             infowindow.open(map, marker);
-            console.log(marker);
         });
     };
 }
