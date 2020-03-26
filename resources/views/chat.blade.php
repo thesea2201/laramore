@@ -94,8 +94,8 @@
                         </div>
                     </div> -->
                     <div class="mesgs">
-                        <chat-messages :messages="messages" :user="{{ Auth::user() }}"></chat-messages>
-                        <chat-form v-on:messagesent="addMessage" :user="{{ Auth::user() }}"></chat-form>
+                        <chat-messages :user="{{ Auth::user() }}"></chat-messages>
+                        {{-- <chat-form v-on:messagesent="addMessage" :user="{{ Auth::user() }}"></chat-form> --}}
                     </div>
                 </div>
             </div>

@@ -39,32 +39,25 @@ const app = new Vue({
     },
 
     created() {
-        this.fetchMessages();
-        Echo.private('laramore')
-        .listen('MessageSent', (e) => {
-            this.messages.push({
-            message: e.message.message,
-            });
-        });
+        // this.fetchMessages();
+        // Echo.private('laramore')
+        // .listen('MessageSent', (e) => {
+        //     this.messages.push({
+        //     message: e.message.message,
+        //     });
+        // });
 
     },
 
     methods: {
-        fetchMessages() {
-            axios.get('/messages').then(response => {
-                this.messages = response.data.messages;
-                this.user = response.data.user;
-            });
-        },
-
-        addMessage(message) {
-            // this.messages.push(message);
-            axios.post('/messages', message).then(response => {
-                axios.get('/messages').then(response => {
-                    this.messages = response.data.messages;
-                    this.user = response.data.user;
-                });
-            });
-        }
+        // addMessage(message) {
+        //     this.messages.push(message);
+        //     axios.post('/messages', message).then(response => {
+        //         axios.get('/messages').then(response => {
+        //             this.messages = response.data.messages;
+        //             this.user = response.data.user;
+        //         });
+        //     });
+        // }
     }
 }); 

@@ -33,8 +33,10 @@ class ChatsController extends Controller
      */
     public function fetchMessages()
     {
-        $message = Message::with('user')->get();
-        return ['messages' =>$message];
+        $message = Message::with(array('user' => function($query){
+            $query->select('id', 'name');
+        }))->get();
+        return ['messages' =>$message, 'user' => Auth::user()];
     }
 
     /**

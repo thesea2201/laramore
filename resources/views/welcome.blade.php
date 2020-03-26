@@ -60,7 +60,7 @@
                 </span>
             @endif
             <div>
-                <form action="{{ url('/') }}" method="post">
+                <form action="{{ url('/room') }}" method="post">
                     @csrf
                     <div class="input-group">
                         <input type="text" name="username" class="form-control" 
