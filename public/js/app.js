@@ -1977,6 +1977,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   // props: ["messages","user"],
@@ -1986,7 +1988,11 @@ __webpack_require__.r(__webpack_exports__);
       user: [],
       messages: [],
       newMessage: '',
-      today: ''
+      today: '',
+      separatedDate: [],
+      temp: {
+        old_unique_date: null
+      }
     };
   },
   created: function created() {
@@ -2041,16 +2047,68 @@ __webpack_require__.r(__webpack_exports__);
     },
     checkTime: function checkTime(createdAt) {
       var now = new Date();
+      var nowTime = now.getTime();
+      var nowDay = now.getDate();
+      var nowMonth = now.getMonth() + 1;
+      var nowYear = now.getFullYear();
+      var nowHour = now.getHours();
+      var nowMinute = now.getMinutes();
       var date = new Date(String(createdAt));
+      var time = date.getTime();
       var day = date.getDate();
-      var month = date.getMonth();
+      var month = date.getMonth() + 1;
       var year = date.getFullYear();
+      var hour = date.getHours();
+      var minute = date.getMinutes();
 
       if (date) {
-        if (day == now.getDate() && month == now.getMonth() && year == now.getFullYear()) {
-          return date.getHours() + ':' + date.getMinutes();
+        if (day == nowDay && month == nowMonth && year == nowYear) {
+          if (nowTime - time < 60 * 1000) {
+            return 'Just now';
+          }
+
+          return hour + ':' + minute;
+        } else if (day != nowDay) {
+          return day + '/' + month + '/' + year + ' ' + hour + ':' + minute;
         }
       }
+    },
+    separateDate: function separateDate(id, createdAt) {
+      var date = new Date(String(createdAt));
+      var day = date.getDate();
+      var month = date.getMonth() + 1;
+      var year = date.getFullYear();
+      var hour = date.getHours();
+      var old_date = this.temp.old_unique_date;
+      var new_date = new Date(date).getDate();
+
+      if (old_date != new_date) {
+        this.temp.old_unique_date = new_date;
+        return day + '/' + month + '/' + year;
+      } else {
+        return false;
+      }
+    },
+    nextMessageId: function nextMessageId(index) {
+      var nextIndex = index + 1;
+
+      if (this.messages[nextIndex]) {
+        return this.messages[nextIndex].id;
+      }
+
+      return '';
+    },
+    preMessageId: function preMessageId(index) {
+      var preIndex = index > 0 ? index - 1 : null;
+
+      if (preIndex !== null && this.messages[preIndex]) {
+        return this.messages[preIndex].id;
+      }
+
+      return '';
+    },
+    separatedDateId: function separatedDateId(id) {
+      return 'separateId-' + id;
     }
   },
   beforeMount: function beforeMount() {
@@ -65010,8 +65068,27 @@ var render = function() {
     _c(
       "div",
       { staticClass: "msg_history" },
-      _vm._l(_vm.messages, function(message) {
+      _vm._l(_vm.messages, function(message, index) {
         return _c("div", { key: message.id }, [
+          _c("div", {
+            directives: [
+              {
+                name: "show",
+                rawName: "v-show",
+                value:
+                  _vm.separateDate(message.id, message.created_at) != false,
+                expression:
+                  "separateDate(message.id ,message.created_at) != false"
+              }
+            ],
+            staticClass: "separated_date",
+            attrs: {
+              id: _vm.separatedDateId(message.id),
+              "data-pre_msg_id": _vm.preMessageId(index),
+              "data-next_msg_id": _vm.nextMessageId(index)
+            }
+          }),
+          _vm._v(" "),
           message.user_id != _vm.user.id
             ? _c("div", { staticClass: "incoming_msg" }, [
                 _vm._m(0, true),

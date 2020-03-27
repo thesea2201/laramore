@@ -7,6 +7,8 @@ use App\Events\MessageSent;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Date;
 
 class ChatsController extends Controller
 {
@@ -33,10 +35,18 @@ class ChatsController extends Controller
      */
     public function fetchMessages()
     {
-        $message = Message::with(array('user' => function($query){
+        $messages = Message::with(array('user' => function($query){
             $query->select('id', 'name');
         }))->get();
-        return ['messages' =>$message, 'user' => Auth::user()];
+        $beginOfDay = '';
+        foreach($messages as $key => $message){
+            $date = $message->created_at->format('d/m/Y');
+            dd($date);
+            // if(){
+
+            // }
+        }
+        return ['messages' =>$messages, 'user' => Auth::user()];
     }
 
     /**

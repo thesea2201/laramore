@@ -1,7 +1,9 @@
 <template>
   <div>
     <div class="msg_history">
-      <div v-for="message in messages" :key="message.id">
+      <div v-for="(message, index) in messages" :key="message.id">
+        <div :id="separatedDateId(message.id)" class="separated_date" :data-pre_msg_id="preMessageId(index)" :data-next_msg_id="nextMessageId(index)" v-show="separateDate(message.id ,message.created_at) != false"></div>  
+        <!-- <div v-if="separateDate(message.created_at) != false">{{ message.created_at }}</div> -->
         <div class="incoming_msg" v-if="message.user_id != user.id">
             <div class="incoming_msg_img"> <img class="avatar" src="image/avatar/avatar-default.png" alt="sunil"> </div>
             <!-- <div class="sender_name">kaito kid </div> -->
@@ -40,6 +42,10 @@ export default {
       messages: [],
       newMessage: '',
       today: '',
+      separatedDate: [],
+      temp: {
+        old_unique_date: null
+      }
     }
   },
   created() {
@@ -94,17 +100,64 @@ export default {
 
     },
     checkTime: function(createdAt) {
-      var now = new Date();
-      var date = new Date(String(createdAt));
-      var day = date.getDate();
-      var month = date.getMonth();
-      var year = date.getFullYear();
+      let now       = new Date();
+      let nowTime   = now.getTime();
+      let nowDay    = now.getDate();
+      let nowMonth  = now.getMonth() + 1;
+      let nowYear   = now.getFullYear();
+      let nowHour   = now.getHours();
+      let nowMinute = now.getMinutes();
+      let date    = new Date(String(createdAt));
+      let time    = date.getTime();
+      let day     = date.getDate();
+      let month   = date.getMonth() + 1;
+      let year    = date.getFullYear();
+      let hour    = date.getHours();
+      let minute  = date.getMinutes();
 
       if(date){
-        if(day == now.getDate() && month == now.getMonth() && year == now.getFullYear() ){
-          return date.getHours() + ':' + date.getMinutes();
+        if(day == nowDay && month == nowMonth && year == nowYear ){
+          if(nowTime - time < 60 * 1000){
+            return 'Just now';
+          }
+          return hour + ':' + minute;
+        }else if(day != nowDay){
+          return day + '/' + month + '/' + year + ' ' + hour + ':' + minute;
         }
       }
+    },
+    separateDate: function(id, createdAt){
+      let date    = new Date(String(createdAt));
+      let day     = date.getDate();
+      let month   = date.getMonth() + 1;
+      let year    = date.getFullYear();
+      let hour    = date.getHours();
+      var old_date = this.temp.old_unique_date;
+      var new_date = new Date(date).getDate();
+      if(old_date != new_date){
+        this.temp.old_unique_date = new_date;
+        return day + '/' + month + '/' + year;
+      }else{
+        return false;
+      }
+    },
+    nextMessageId(index){
+      let nextIndex = index +1;
+      if(this.messages[nextIndex]){
+        return this.messages[nextIndex].id;
+      }
+      return '';
+    },
+
+    preMessageId(index){
+      let preIndex = index > 0 ? index -1 : null;
+      if(preIndex !== null && this.messages[preIndex]){
+        return this.messages[preIndex].id;
+      }
+      return '';
+    },
+    separatedDateId: function(id){
+      return 'separateId-' + id;
     }
  
   },

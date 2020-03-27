@@ -231,7 +231,9 @@
     overflow-y: scroll;
 }
 
-
+.separated_date{
+    background: #05728f;
+}
 /* End message */
 
 
