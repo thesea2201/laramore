@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Message;
 use App\Events\MessageSent;
+use App\UrlView;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\JsonResponse;
@@ -25,6 +26,16 @@ class ChatsController extends Controller
      */
     public function index()
     {
+        $ip = \Request::ip();
+        $userID = Auth::check() ? Auth::id() : null;
+        $data = [
+            'ip_address' => $ip,
+            'user_id' => $userID
+        ];
+
+        UrlView::query()->create($data);
+
+
         return view('chat');
     }
 
